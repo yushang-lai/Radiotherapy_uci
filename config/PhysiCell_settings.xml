@@ -1,0 +1,91 @@
+
+<PhysiCell_settings version="devel-version">
+	<domain>
+		<x_min>-1500</x_min>
+		<x_max>1500</x_max>
+		<y_min>-1500</y_min>
+		<y_max>1500</y_max>
+		<z_min>-10</z_min>
+		<z_max>10</z_max>
+		<dx>20</dx>
+		<dy>20</dy>
+		<dz>20</dz>
+		<use_2D>true</use_2D>
+	</domain>
+	
+	<overall>
+		<max_time units="min">3240</max_time> <!-- 5 days * 24 h * 60 min -->
+		<time_units>min</time_units>
+		<space_units>micron</space_units>
+	</overall>
+	
+	<parallel>
+		<omp_num_threads>8</omp_num_threads>
+	</parallel> 
+	
+	<save>
+		<folder>output</folder> <!-- use . for root --> 
+
+		<full_data>
+			<interval units="min">360</interval>
+			<enable>ture</enable>
+		</full_data>
+		
+		<SVG>
+			<interval units="min">60</interval>
+			<enable>true</enable>
+		</SVG>
+		
+		<legacy_data>
+			<enable>false</enable>
+		</legacy_data>
+	</save>
+	
+	<microenvironment_setup>
+		<variable name="oxygen" units="mmHg" ID="0">
+			<physical_parameter_set>
+				<diffusion_coefficient units="micron^2/min">100000.0</diffusion_coefficient>
+				<decay_rate units="1/min">0.1</decay_rate>  
+			</physical_parameter_set>
+			<initial_condition units="mmHg">38.0</initial_condition>
+			<Dirichlet_boundary_condition units="mmHg" enabled="true">38.0</Dirichlet_boundary_condition>
+		</variable>
+		
+		<options>
+			<calculate_gradients>true</calculate_gradients>
+			<track_internalized_substrates_in_each_agent>false</track_internalized_substrates_in_each_agent>
+			<!-- not yet supported --> 
+			<initial_condition type="matlab" enabled="false">
+				<filename>./config/initial.mat</filename>
+			</initial_condition>
+			<!-- not yet supported --> 
+			<dirichlet_nodes type="matlab" enabled="false">
+				<filename>./config/dirichlet.mat</filename>
+			</dirichlet_nodes>
+		</options>
+	</microenvironment_setup>	
+	
+	<user_parameters>
+		<random_seed type="int" units="dimensionless">0</random_seed> 
+		<!-- example parameters from the template --> 
+		
+		<!-- stem cell properties --> 
+		<CSC_birth_rate type="double" units="1/min" description="CSC birth rate">2.7777777777777e-03</CSC_birth_rate> <!-- 60 hours --> <!-- done --> 
+		<CSC_apoptosis_rate type="double" units="1/min" description="CSC apoptosis rate">0</CSC_apoptosis_rate>
+		<differentiation_probability type="double" description="probability that a new CSC differentiates">0.2</differentiation_probability>
+		
+		<!-- differentiated cell properties -->                                   <!-- 9.259259259259260e-04 -->       <!--4.629629629629630e-04-->
+		<DCC_birth_rate type="double" units="1/min" description="DCC birth rate">2.7777777777777e-03</DCC_birth_rate> <!-- 18 hours --> <!-- done --> 
+		<DCC_apoptosis_rate type="double" units="1/min" description="DCC apoptosis rate">0</DCC_apoptosis_rate>	<!-- chosen so they live about 2 cycles --> 
+				
+		<!-- tissue setup --> 
+		<number_of_stem_cells type="int" description="initial number of cancer stem cells">100</number_of_stem_cells> 
+		<number_of_differentiated_cells type="int" description="initial number of differentiated cancer cells">0</number_of_differentiated_cells> 
+		
+		<!-- other setup -->
+		<disable_diffusion type="bool" description="set this to true for faster testing, but no chemokines">true</disable_diffusion> <!-- done --> 
+		<fixed_cycle_duration type="bool" description="is cell cycle length fixed?">false</fixed_cycle_duration> 
+		
+	</user_parameters>
+	
+</PhysiCell_settings>
